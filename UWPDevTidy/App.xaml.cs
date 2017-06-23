@@ -5,6 +5,7 @@
 using System;
 using System.Linq;
 using System.Windows;
+using CommandLine.Text;
 
 namespace UWPDevTidy
 {
@@ -13,38 +14,39 @@ namespace UWPDevTidy
     /// </summary>
     public partial class App
     {
+        public static ConsoleColor DefaultColor { get; private set; }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
             if (e.Args.Any())
             {
+                if (!NativeMethods.AttachConsole(-1))
+                {
+                    // allocate a new console
+                    NativeMethods.AllocConsole();
+                }
+
                 var options = new Options();
 
                 if (CommandLine.Parser.Default.ParseArguments(e.Args, options))
                 {
-                    if (!NativeMethods.AttachConsole(-1))
+                    DefaultColor = Console.ForegroundColor;
+
+                    var appTitle = new HelpText
                     {
-                        // allocate a new console
-                        NativeMethods.AllocConsole();
-                    }
+                        Heading = HeadingInfo.Default,
+                        Copyright = CopyrightInfo.Default,
+                        AdditionalNewLineAfterOption = true,
+                        AddDashesToOption = true
+                    };
 
-                    var defaultColor = Console.ForegroundColor;
-
-                    Console.ForegroundColor = ConsoleColor.DarkCyan;
-                    Console.WriteLine(options.List);
-                    Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.WriteLine(options.MaximumCount);
-                    Console.ForegroundColor = ConsoleColor.Magenta;
-                    Console.WriteLine(options.NameStarting);
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine(options.Uninstall);
-                    Console.ForegroundColor = ConsoleColor.Blue;
-                    Console.WriteLine(options.Verbose);
-
-                    Console.ForegroundColor = defaultColor;
+                    Console.WriteLine(appTitle);
 
                     AppTidier.Tidy(options);
+
+                    Console.ForegroundColor = DefaultColor;
                 }
                 else
                 {

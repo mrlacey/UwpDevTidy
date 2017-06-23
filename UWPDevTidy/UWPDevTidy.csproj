@@ -71,6 +71,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="AppDetail.cs" />
     <Compile Include="AppTidier.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="MainWindow.xaml.cs">
@@ -81,6 +82,7 @@
   <ItemGroup>
     <Compile Include="NativeMethods.cs" />
     <Compile Include="Options.cs" />
+    <Compile Include="OptionsExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

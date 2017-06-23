@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Management.Automation;
 using System.Xml;
 
@@ -16,12 +17,54 @@ namespace UWPDevTidy
     {
         public static void Tidy(Options options)
         {
-            throw new NotImplementedException();
+            options.VerboseLog("Retrieving apps that can be uninstalledd");
+
+            var allApps = GetAllAppNames();
+
+            List<AppDetail> appsOfInterest = allApps;
+
+            options.VerboseLog($"Found {appsOfInterest.Count()} entries.");
+
+            if (!string.IsNullOrWhiteSpace(options.NameStarting))
+            {
+                options.VerboseLog($"Filtering to apps starting '{options.NameStarting}'.");
+
+                appsOfInterest = allApps.Where(a => a.DisplayName.StartsWith(options.NameStarting)).ToList();
+
+                options.VerboseLog($"App list now contains '{appsOfInterest.Count()}' entries.");
+            }
+
+            if (options.List)
+            {
+                options.VerboseLog($"Listing {Math.Min(options.MaximumCount, appsOfInterest.Count())} apps.");
+
+                foreach (var app in appsOfInterest.Take(options.MaximumCount))
+                {
+                    Console.ForegroundColor = App.DefaultColor;
+                    Console.WriteLine(app.DisplayName);
+                    Console.WriteLine(app.ProductFamilyName);
+                    Console.WriteLine(app.InstallPath);
+                    Console.WriteLine();
+                }
+            }
+
+            if (options.Uninstall)
+            {
+                options.VerboseLog($"About to uninstall {Math.Min(options.MaximumCount, appsOfInterest.Count())} apps.");
+
+                foreach (var app in appsOfInterest.Take(options.MaximumCount))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"Uninstalling: {app.DisplayName} ({app.ProductFamilyName})");
+                    RemoveApp(app.ProductFamilyName);
+                    Console.WriteLine($"{app.DisplayName} uninstalled.");
+                }
+            }
         }
 
-        public static IEnumerable<string> GetAllAppNames()
+        public static List<AppDetail> GetAllAppNames()
         {
-            var result = new List<string>();
+            var result = new List<AppDetail>();
 
             using (var ps = PowerShell.Create())
             {
@@ -45,7 +88,8 @@ namespace UWPDevTidy
                         //// TODO: do something with the output item
                         //// outputItem.BaseOBject
 
-                        if ((bool)outputItem.Properties["IsDevelopmentMode"].Value)
+                        if (outputItem.Properties.Any(p => p.Name == "IsDevelopmentMode")
+                         && (bool)outputItem.Properties["IsDevelopmentMode"].Value)
                         {
                             string installLocation = null;
 
@@ -60,14 +104,14 @@ namespace UWPDevTidy
                                     }
                                     catch (Exception e)
                                     {
-                                        Console.WriteLine(e);
+                                        // Debug.WriteLine(e);
                                     }
 
                                     break;
                                 }
                             }
 
-                            if (installLocation != null && Directory.Exists(installLocation))
+                            if (installLocation != null && !installLocation.Contains("ShadowCache") && Directory.Exists(installLocation))
                             {
                                 var manifestPath = Path.Combine(installLocation, "AppxManifest.xml");
 
@@ -83,7 +127,7 @@ namespace UWPDevTidy
 
                                     Debug.WriteLine(displayName);
 
-                                    result.Add($"{displayName} ({officialName})");
+                                    result.Add(new AppDetail(displayName, officialName, installLocation));
                                 }
                             }
                         }
@@ -91,7 +135,7 @@ namespace UWPDevTidy
                 }
             }
 
-            return result;
+            return result.OrderBy(a => a.DisplayName).ToList();
         }
 
         public static void RemoveApp(string appName)
