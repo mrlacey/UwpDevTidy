@@ -37,7 +37,6 @@ namespace UWPDevTidy
         {
             this.SetStatusMessage("Loading list of apps.");
 
-
             await Task.Run(() =>
             {
                 this.Apps = new ObservableCollection<AppDetail>(AppTidier.GetAllAppNames());

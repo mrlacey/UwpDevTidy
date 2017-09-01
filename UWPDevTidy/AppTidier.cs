@@ -86,7 +86,7 @@ namespace UWPDevTidy
                     if (outputItem != null)
                     {
                         //// TODO: do something with the output item
-                        //// outputItem.BaseOBject
+                        //// outputItem.BaseObject
 
                         if (outputItem.Properties.Any(p => p.Name == "IsDevelopmentMode")
                          && (bool)outputItem.Properties["IsDevelopmentMode"].Value)
@@ -104,7 +104,7 @@ namespace UWPDevTidy
                                     }
                                     catch (Exception e)
                                     {
-                                        // Debug.WriteLine(e);
+                                         Debug.WriteLine(e);
                                     }
 
                                     break;
