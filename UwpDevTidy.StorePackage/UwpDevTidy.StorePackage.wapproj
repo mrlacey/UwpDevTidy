@@ -38,8 +38,9 @@
     <TargetPlatformVersion>10.0.15063.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.14393.0</TargetPlatformMinVersion>
     <DefaultLanguage>en-US</DefaultLanguage>
-    <PackageCertificateKeyFile>UwpDevTidy.StorePackage_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>UwpDevTidy.StorePackage_StoreKey.pfx</PackageCertificateKeyFile>
     <EntryPointProjectUniqueName>..\UWPDevTidy\UWPDevTidy.csproj</EntryPointProjectUniqueName>
+    <PackageCertificateThumbprint>D162533F38F7724313B2899B217160B11437817B</PackageCertificateThumbprint>
   </PropertyGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -90,6 +91,8 @@
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <None Include="UwpDevTidy.StorePackage_StoreKey.pfx" />
+    <None Include="Package.StoreAssociation.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UWPDevTidy\UWPDevTidy.csproj" />
