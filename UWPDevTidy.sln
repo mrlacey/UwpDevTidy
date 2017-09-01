@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.26823.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UWPDevTidy", "UWPDevTidy\UWPDevTidy.csproj", "{BFC63BBB-7267-4B39-9912-9DCB29A87EA6}"
 EndProject
 Project("{262852C6-CD72-467D-83FE-5EEB1973A190}") = "UwpDevTidy.Package", "UwpDevTidy.Package\UwpDevTidy.Package.jsproj", "{08C8DBC3-3B05-4748-BF8C-3205F40FDF2E}"
+EndProject
+Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "UwpDevTidy.StorePackage", "UwpDevTidy.StorePackage\UwpDevTidy.StorePackage.wapproj", "{5ABE959F-3325-42F1-93AD-2105B1F0E38A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,8 +61,35 @@ Global
 		{08C8DBC3-3B05-4748-BF8C-3205F40FDF2E}.Release|x86.ActiveCfg = Release|x86
 		{08C8DBC3-3B05-4748-BF8C-3205F40FDF2E}.Release|x86.Build.0 = Release|x86
 		{08C8DBC3-3B05-4748-BF8C-3205F40FDF2E}.Release|x86.Deploy.0 = Release|x86
+		{5ABE959F-3325-42F1-93AD-2105B1F0E38A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5ABE959F-3325-42F1-93AD-2105B1F0E38A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5ABE959F-3325-42F1-93AD-2105B1F0E38A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{5ABE959F-3325-42F1-93AD-2105B1F0E38A}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{5ABE959F-3325-42F1-93AD-2105B1F0E38A}.Debug|ARM.Build.0 = Debug|Any CPU
+		{5ABE959F-3325-42F1-93AD-2105B1F0E38A}.Debug|ARM.Deploy.0 = Debug|Any CPU
+		{5ABE959F-3325-42F1-93AD-2105B1F0E38A}.Debug|x64.ActiveCfg = Debug|x64
+		{5ABE959F-3325-42F1-93AD-2105B1F0E38A}.Debug|x64.Build.0 = Debug|x64
+		{5ABE959F-3325-42F1-93AD-2105B1F0E38A}.Debug|x64.Deploy.0 = Debug|x64
+		{5ABE959F-3325-42F1-93AD-2105B1F0E38A}.Debug|x86.ActiveCfg = Debug|x86
+		{5ABE959F-3325-42F1-93AD-2105B1F0E38A}.Debug|x86.Build.0 = Debug|x86
+		{5ABE959F-3325-42F1-93AD-2105B1F0E38A}.Debug|x86.Deploy.0 = Debug|x86
+		{5ABE959F-3325-42F1-93AD-2105B1F0E38A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5ABE959F-3325-42F1-93AD-2105B1F0E38A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5ABE959F-3325-42F1-93AD-2105B1F0E38A}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{5ABE959F-3325-42F1-93AD-2105B1F0E38A}.Release|ARM.ActiveCfg = Release|Any CPU
+		{5ABE959F-3325-42F1-93AD-2105B1F0E38A}.Release|ARM.Build.0 = Release|Any CPU
+		{5ABE959F-3325-42F1-93AD-2105B1F0E38A}.Release|ARM.Deploy.0 = Release|Any CPU
+		{5ABE959F-3325-42F1-93AD-2105B1F0E38A}.Release|x64.ActiveCfg = Release|x64
+		{5ABE959F-3325-42F1-93AD-2105B1F0E38A}.Release|x64.Build.0 = Release|x64
+		{5ABE959F-3325-42F1-93AD-2105B1F0E38A}.Release|x64.Deploy.0 = Release|x64
+		{5ABE959F-3325-42F1-93AD-2105B1F0E38A}.Release|x86.ActiveCfg = Release|x86
+		{5ABE959F-3325-42F1-93AD-2105B1F0E38A}.Release|x86.Build.0 = Release|x86
+		{5ABE959F-3325-42F1-93AD-2105B1F0E38A}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {970813B7-03D5-4343-A46B-3CFBD3C55A4D}
 	EndGlobalSection
 EndGlobal
