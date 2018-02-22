@@ -23,20 +23,20 @@ namespace UWPDevTidy
 
             List<AppDetail> appsOfInterest = allApps;
 
-            options.VerboseLog($"Found {appsOfInterest.Count()} entries.");
+            options.VerboseLog($"Found {appsOfInterest.Count} entries.");
 
             if (!string.IsNullOrWhiteSpace(options.NameStarting))
             {
                 options.VerboseLog($"Filtering to apps starting '{options.NameStarting}'.");
 
-                appsOfInterest = allApps.Where(a => a.DisplayName.StartsWith(options.NameStarting)).ToList();
+                appsOfInterest = allApps.Where(a => a.DisplayName.StartsWith(options.NameStarting, StringComparison.CurrentCultureIgnoreCase)).ToList();
 
-                options.VerboseLog($"App list now contains '{appsOfInterest.Count()}' entries.");
+                options.VerboseLog($"App list now contains '{appsOfInterest.Count}' entries.");
             }
 
             if (options.List)
             {
-                options.VerboseLog($"Listing {Math.Min(options.MaximumCount, appsOfInterest.Count())} apps.");
+                options.VerboseLog($"Listing {Math.Min(options.MaximumCount, appsOfInterest.Count)} apps.");
 
                 foreach (var app in appsOfInterest.Take(options.MaximumCount))
                 {

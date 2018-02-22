@@ -12,7 +12,7 @@ namespace UWPDevTidy
         [Option('l', "list", DefaultValue = false, HelpText = "Show all apps")]
         public bool List { get; set; }
 
-        [Option('u', "uninstall", DefaultValue = false, HelpText = "Uninstall all apps")]
+        [Option('u', "uninstall", DefaultValue = false, HelpText = "Uninstall apps")]
         public bool Uninstall { get; set; }
 
         [Option('n', "nameStarts", HelpText = "Prefix of app name.")]
