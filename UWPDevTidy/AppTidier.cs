@@ -15,11 +15,11 @@ namespace UWPDevTidy
 {
     public static class AppTidier
     {
-        public static void Tidy(Options options)
+        public static void Tidy(Options options, bool onlyDevApps = true)
         {
             options.VerboseLog("Retrieving apps that can be uninstalledd");
 
-            var allApps = GetAllAppNames();
+            var allApps = GetAllAppNames(true);
 
             List<AppDetail> appsOfInterest = allApps;
 
@@ -62,7 +62,7 @@ namespace UWPDevTidy
             }
         }
 
-        public static List<AppDetail> GetAllAppNames()
+        public static List<AppDetail> GetAllAppNames(bool onlyDevApps)
         {
             var result = new List<AppDetail>();
 
@@ -85,51 +85,75 @@ namespace UWPDevTidy
                     // object may be present here. check for null to prevent potential NRE.
                     if (outputItem != null)
                     {
-                        //// TODO: do something with the output item
-                        //// outputItem.BaseObject
+                        var isDevMode = outputItem.Properties.Any(p => p.Name == "IsDevelopmentMode")
+                                     && (bool)outputItem.Properties["IsDevelopmentMode"].Value;
 
-                        if (outputItem.Properties.Any(p => p.Name == "IsDevelopmentMode")
-                         && (bool)outputItem.Properties["IsDevelopmentMode"].Value)
+                        string displayName = string.Empty;
+                        string officialName = string.Empty;
+                        string installLocation = null;
+
+                        foreach (var outputItemMember in outputItem.Members)
                         {
-                            string installLocation = null;
-
-                            foreach (var outputItemMember in outputItem.Members)
+                            if (outputItemMember.Name == "InstallLocation")
                             {
-                                if (outputItemMember.Name == "InstallLocation")
+                                try
                                 {
-                                    try
-                                    {
-                                        installLocation = outputItemMember.Value.ToString();
-                                        Debug.WriteLine(installLocation);
-                                    }
-                                    catch (Exception e)
-                                    {
-                                         Debug.WriteLine(e);
-                                    }
-
-                                    break;
+                                    installLocation = outputItemMember.Value.ToString();
+                                    Debug.WriteLine(installLocation);
                                 }
-                            }
+                                catch (Exception e)
+                                {
+                                    Debug.WriteLine(e);
+                                }
 
-                            if (installLocation != null && !installLocation.Contains("ShadowCache") && Directory.Exists(installLocation))
+                                break;
+                            }
+                        }
+
+                        if (installLocation != null && !installLocation.Contains("ShadowCache") && Directory.Exists(installLocation))
+                        {
+                            var manifestPath = Path.Combine(installLocation, "AppxManifest.xml");
+
+                            if (File.Exists(manifestPath))
                             {
-                                var manifestPath = Path.Combine(installLocation, "AppxManifest.xml");
+                                var manifest = File.ReadAllText(manifestPath);
 
-                                if (File.Exists(manifestPath))
-                                {
-                                    var manifest = File.ReadAllText(manifestPath);
+                                var xml = new XmlDocument();
+                                xml.LoadXml(manifest);
 
-                                    var xml = new XmlDocument();
-                                    xml.LoadXml(manifest);
+                                displayName = xml.DocumentElement?.GetElementsByTagName("DisplayName")[0].InnerText ?? "*Unknown*";
+                                officialName = outputItem.Properties["Name"].Value.ToString();
 
-                                    var displayName = xml.DocumentElement?.GetElementsByTagName("DisplayName")[0].InnerText ?? "*Unknown*";
-                                    var officialName = outputItem.Properties["Name"].Value.ToString();
-
-                                    Debug.WriteLine(displayName);
-
-                                    result.Add(new AppDetail(displayName, officialName, installLocation));
-                                }
+                                Debug.WriteLine(displayName);
                             }
+                        }
+                        else
+                        {
+                            displayName = ((PSProperty)outputItem.Members["Name"]).Value.ToString();
+                            officialName = ((PSProperty)outputItem.Members["PackageFullName"]).Value.ToString();
+                        }
+
+                        bool addToOutput;
+
+                        if (onlyDevApps)
+                        {
+                            if (isDevMode && !string.IsNullOrWhiteSpace(installLocation) && !installLocation.Contains("ShadowCache"))
+                            {
+                                addToOutput = true;
+                            }
+                            else
+                            {
+                                addToOutput = false;
+                            }
+                        }
+                        else
+                        {
+                            addToOutput = true;
+                        }
+
+                        if (addToOutput)
+                        {
+                            result.Add(new AppDetail(displayName, officialName, installLocation));
                         }
                     }
                 }
