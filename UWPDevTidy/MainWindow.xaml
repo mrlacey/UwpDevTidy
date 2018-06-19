@@ -3,18 +3,23 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:uwpDevTidy="clr-namespace:UWPDevTidy"
         mc:Ignorable="d"
         Title="UWP Dev Tidy">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <ListBox Grid.Row="0" x:Name="AppList" SelectionMode="Extended" ItemsSource="{Binding Apps}" Margin="12">
+        <CheckBox Grid.Row="0" x:Name="OnlyDevApps" IsChecked="False" Margin="12,0" >
+            <TextBlock Text="Only include development apps from known locations"
+                       TextWrapping="Wrap"/>
+        </CheckBox>
+        <ListBox Grid.Row="1" x:Name="AppList" SelectionMode="Extended" ItemsSource="{Binding Apps}" Margin="12">
             <ListBox.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate DataType="uwpDevTidy:AppDetail">
                     <StackPanel Margin="0,0,0,8">
                         <TextBlock Text="{Binding DisplayName}" FontSize="20" />
                         <TextBlock Text="{Binding ProductFamilyName}" FontSize="12" />
@@ -23,10 +28,6 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <CheckBox Grid.Row="1" x:Name="AcceptRisk" IsChecked="False" Margin="12,0" >
-            <TextBlock Text="I use this software at my own risk and will not hold anyone else responsible if it is used to uninstall something important or there are any other unwanted side effects of use"
-                       TextWrapping="Wrap"/>
-        </CheckBox>
         <Button Grid.Row="2" Content="Uninstall selected" Click="UninstallClicked" Margin="12" />
         <StatusBar Grid.Row="3" >
             <StatusBarItem>
